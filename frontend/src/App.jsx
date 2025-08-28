@@ -64,7 +64,6 @@ const VCSearch = () => {
       let query = supabase.from("vcs").select("*");
 
       if (industry) query = query.contains("industry_focus", [industry]);
-      if (stage) query = query.contains("stage_focus", [stage]);
       if (location) query = query.ilike("location", `%${location}%`);
 
       const { data, error } = await query;
@@ -676,73 +675,92 @@ const VCSearch = () => {
         <div className="absolute inset-0 bg-black opacity-10"></div>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-20"></div>
         
-        <div className="relative max-w-6xl mx-auto px-6 py-20 text-center">
-          <div className="flex items-center justify-center mb-6">
-            <div className="p-3 bg-white bg-opacity-20 rounded-full backdrop-blur-sm">
-              <Sparkles className="w-10 h-10 text-yellow-300" />
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-20 text-center">
+          <div className="flex items-center justify-center mb-4 sm:mb-6">
+            <div className="p-2 sm:p-3 bg-white bg-opacity-20 rounded-full backdrop-blur-sm">
+              <Sparkles className="w-8 h-8 sm:w-10 sm:h-10 text-yellow-300" />
             </div>
           </div>
           
-          <h1 className="text-5xl md:text-6xl font-extrabold mb-4 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-3 sm:mb-4 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
             Discover Opportunities
           </h1>
-          <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto mb-8 font-light">
+          <p className="text-lg sm:text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto mb-6 sm:mb-8 font-light px-2">
             Connect with venture capital partners or explore comprehensive startup schemes
           </p>
 
           {/* Enhanced Toggle Switch */}
-          <div className="flex justify-center">
-            <div className="bg-white bg-opacity-25 backdrop-blur-md rounded-full p-2 shadow-2xl border border-white border-opacity-40">
+          <div className="flex justify-center w-full px-4">
+            <div className="relative bg-white bg-opacity-20 backdrop-blur-md rounded-2xl p-1.5 shadow-2xl border border-white border-opacity-30 w-full max-w-sm sm:max-w-md">
+              {/* Background Slider */}
+              <div 
+                className={`absolute top-1.5 bottom-1.5 rounded-xl bg-white shadow-lg transition-all duration-500 ease-out ${
+                  viewMode === "vcs" 
+                    ? "left-1.5 w-[calc(50%-0.375rem)]" 
+                    : "left-[calc(50%+0.375rem)] w-[calc(50%-0.375rem)]"
+                }`}
+              />
+              
+              {/* VCs Button */}
               <button
                 onClick={() => handleToggle("vcs")}
-                className={`px-8 py-3 rounded-full font-semibold transition-all duration-300 ${
+                className={`relative w-1/2 py-3 px-2 sm:px-4 rounded-xl font-semibold transition-all duration-300 text-sm sm:text-base z-10 ${
                   viewMode === "vcs"
-                    ? "bg-white text-blue-600 shadow-lg transform scale-105"
-                    : "text-black hover:bg-white hover:bg-opacity-20 bg-white bg-opacity-10"
+                    ? "text-blue-600"
+                    : "text-black hover:text-blue-100"
                 }`}
               >
-                <Users className="w-5 h-5 inline mr-2" />
-                Venture Capitalists
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2">
+                  <Users className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <span className="hidden sm:inline">Venture Capitalists</span>
+                  <span className="sm:hidden">VCs</span>
+                </div>
               </button>
+              
+              {/* Schemes Button */}
               <button
                 onClick={() => handleToggle("schemes")}
-                className={`px-8 py-3 rounded-full font-semibold transition-all duration-300 ${
+                className={`relative w-1/2 py-3 px-2 sm:px-4 rounded-xl font-semibold transition-all duration-300 text-sm sm:text-base z-10 ${
                   viewMode === "schemes"
-                    ? "bg-white text-purple-600 shadow-lg transform scale-105"
-                    : "text-black hover:bg-white hover:bg-opacity-20 bg-white bg-opacity-10"
+                    ? "text-purple-600"
+                    : "text-black hover:text-purple-100"
                 }`}
               >
-                <Award className="w-5 h-5 inline mr-2" />
-                Startup Schemes
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2">
+                  <Award className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <span className="hidden sm:inline">Startup Schemes</span>
+                  <span className="sm:hidden">Schemes</span>
+                </div>
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 py-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {/* Enhanced VC Search Filters */}
         {viewMode === "vcs" && (
-          <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 p-8 mb-12 backdrop-blur-sm">
-            <div className="flex items-center mb-8">
+          <div className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-gray-100 p-4 sm:p-6 lg:p-8 mb-8 sm:mb-12 backdrop-blur-sm">
+            <div className="flex items-center mb-6 sm:mb-8">
               <div className="p-2 bg-blue-100 rounded-xl mr-3">
-                <Filter className="w-6 h-6 text-blue-600" />
+                <Filter className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
               </div>
-              <h2 className="text-2xl font-bold text-gray-800">Refine Your Search</h2>
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Refine Your Search</h2>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-6 sm:mb-8">
               {/* Enhanced Industry Dropdown */}
               <div className="group">
-                <label className="block text-sm font-semibold text-gray-700 mb-3 flex items-center">
-                  <Building2 className="w-5 h-5 mr-2 text-blue-500" />
-                  Industry Focus
+                <label className="block text-sm font-semibold text-gray-700 mb-2 sm:mb-3 flex items-center">
+                  <Building2 className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-blue-500" />
+                  <span className="hidden sm:inline">Industry Focus</span>
+                  <span className="sm:hidden">Industry</span>
                 </label>
                 <div className="relative">
                   <select
                     value={industry}
                     onChange={(e) => setIndustry(e.target.value)}
-                    className="w-full px-5 py-4 rounded-2xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 text-gray-700 group-hover:border-blue-300 appearance-none bg-white cursor-pointer"
+                    className="w-full px-3 sm:px-5 py-3 sm:py-4 rounded-xl sm:rounded-2xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 sm:focus:ring-4 focus:ring-blue-100 transition-all duration-300 text-gray-700 group-hover:border-blue-300 appearance-none bg-white cursor-pointer text-sm sm:text-base"
                   >
                     <option value="">Select Industry</option>
                     <option value="AI">AI</option>
@@ -751,8 +769,8 @@ const VCSearch = () => {
                     <option value="SaaS">SaaS</option>
                     <option value="Blockchain">Blockchain</option>
                   </select>
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-5 pointer-events-none">
-                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 sm:pr-5 pointer-events-none">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
                   </div>
@@ -761,15 +779,16 @@ const VCSearch = () => {
 
               {/* Enhanced Stage Dropdown */}
               <div className="group">
-                <label className="block text-sm font-semibold text-gray-700 mb-3 flex items-center">
-                  <TrendingUp className="w-5 h-5 mr-2 text-green-500" />
-                  Investment Stage
+                <label className="block text-sm font-semibold text-gray-700 mb-2 sm:mb-3 flex items-center">
+                  <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-green-500" />
+                  <span className="hidden sm:inline">Investment Stage</span>
+                  <span className="sm:hidden">Stage</span>
                 </label>
                 <div className="relative">
                   <select
                     value={stage}
                     onChange={(e) => setStage(e.target.value)}
-                    className="w-full px-5 py-4 rounded-2xl border-2 border-gray-200 focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-300 text-gray-700 group-hover:border-green-300 appearance-none bg-white cursor-pointer"
+                    className="w-full px-3 sm:px-5 py-3 sm:py-4 rounded-xl sm:rounded-2xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 sm:focus:ring-4 focus:ring-green-100 transition-all duration-300 text-gray-700 group-hover:border-green-300 appearance-none bg-white cursor-pointer text-sm sm:text-base"
                   >
                     <option value="">Select Stage</option>
                     <option value="Pre-Seed">Pre-Seed</option>
@@ -781,8 +800,8 @@ const VCSearch = () => {
                     <option value="Growth">Growth</option>
                     <option value="Late Stage">Late Stage</option>
                   </select>
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-5 pointer-events-none">
-                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 sm:pr-5 pointer-events-none">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
                   </div>
@@ -791,35 +810,56 @@ const VCSearch = () => {
 
               {/* Enhanced Location Dropdown */}
               <div className="group">
-                <label className="block text-sm font-semibold text-gray-700 mb-3 flex items-center">
-                  <MapPin className="w-5 h-5 mr-2 text-purple-500" />
+                <label className="block text-sm font-semibold text-gray-700 mb-2 sm:mb-3 flex items-center">
+                  <MapPin className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-purple-500" />
                   Location
                 </label>
                 <div className="relative">
                   <select
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
-                    className="w-full px-5 py-4 rounded-2xl border-2 border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-300 text-gray-700 group-hover:border-purple-300 appearance-none bg-white cursor-pointer"
+                    className="w-full px-3 sm:px-5 py-3 sm:py-4 rounded-xl sm:rounded-2xl border-2 border-gray-200 focus:border-purple-500 focus:ring-2 sm:focus:ring-4 focus:ring-purple-100 transition-all duration-300 text-gray-700 group-hover:border-purple-300 appearance-none bg-white cursor-pointer text-sm sm:text-base"
                   >
                     <option value="">Select Location</option>
-                    <option value="San Francisco">San Francisco</option>
-                    <option value="New York">New York</option>
-                    <option value="London">London</option>
-                    <option value="Berlin">Berlin</option>
-                    <option value="Paris">Paris</option>
-                    <option value="Singapore">Singapore</option>
-                    <option value="Tokyo">Tokyo</option>
-                    <option value="Mumbai">Mumbai</option>
-                    <option value="Bangalore">Bangalore</option>
-                    <option value="Austin">Austin</option>
-                    <option value="Boston">Boston</option>
-                    <option value="Los Angeles">Los Angeles</option>
-                    <option value="Seattle">Seattle</option>
-                    <option value="Toronto">Toronto</option>
-                    <option value="Sydney">Sydney</option>
+                    
+                    {/* Indian Cities - Shown First */}
+                    <optgroup label="🇮🇳 Indian Cities">
+                      <option value="Mumbai">Mumbai</option>
+                      <option value="Bangalore">Bangalore</option>
+                      <option value="Delhi">Delhi</option>
+                      <option value="Hyderabad">Hyderabad</option>
+                      <option value="Chennai">Chennai</option>
+                      <option value="Pune">Pune</option>
+                      <option value="Gurgaon">Gurgaon</option>
+                      <option value="Noida">Noida</option>
+                      <option value="Ahmedabad">Ahmedabad</option>
+                      <option value="Jaipur">Jaipur</option>
+                      <option value="Kolkata">Kolkata</option>
+                      <option value="Indore">Indore</option>
+                      <option value="Chandigarh">Chandigarh</option>
+                      <option value="Lucknow">Lucknow</option>
+                      <option value="Bhopal">Bhopal</option>
+                    </optgroup>
+                    
+                    {/* International Cities - Shown Last */}
+                    <optgroup label="🌍 International Cities">
+                      <option value="San Francisco">San Francisco</option>
+                      <option value="New York">New York</option>
+                      <option value="London">London</option>
+                      <option value="Berlin">Berlin</option>
+                      <option value="Paris">Paris</option>
+                      <option value="Singapore">Singapore</option>
+                      <option value="Tokyo">Tokyo</option>
+                      <option value="Austin">Austin</option>
+                      <option value="Boston">Boston</option>
+                      <option value="Los Angeles">Los Angeles</option>
+                      <option value="Seattle">Seattle</option>
+                      <option value="Toronto">Toronto</option>
+                      <option value="Sydney">Sydney</option>
+                    </optgroup>
                   </select>
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-5 pointer-events-none">
-                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 sm:pr-5 pointer-events-none">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
                   </div>
@@ -832,46 +872,46 @@ const VCSearch = () => {
               <button
                 onClick={handleSearch}
                 disabled={isLoading}
-                className="px-12 py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white font-bold rounded-2xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 disabled:opacity-70 disabled:transform-none flex items-center justify-center mx-auto min-w-48"
+                className="w-full sm:w-auto px-6 sm:px-12 py-3 sm:py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white font-bold rounded-xl sm:rounded-2xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 disabled:opacity-70 disabled:transform-none flex items-center justify-center mx-auto min-w-48"
               >
                 {isLoading ? (
                   <>
-                    <div className="animate-spin w-6 h-6 mr-3 border-2 border-white border-t-transparent rounded-full"></div>
-                    <span className="text-lg">Searching...</span>
+                    <div className="animate-spin w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3 border-2 border-white border-t-transparent rounded-full"></div>
+                    <span className="text-base sm:text-lg">Searching...</span>
                   </>
                 ) : (
                   <>
-                    <Search className="w-6 h-6 mr-3" />
-                    <span className="text-lg">Find Perfect VCs</span>
+                    <Search className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
+                    <span className="text-base sm:text-lg">Find All Matching VCs</span>
                   </>
                 )}
               </button>
-              <p className="text-sm text-gray-500 mt-3">
-                Select your preferences above and click search to find matching VCs
+              <p className="text-xs sm:text-sm text-gray-500 mt-3 px-2">
+                Select industry and location to find all available VCs (all stages included)
               </p>
             </div>
           </div>
         )}
 
         {/* Enhanced Results Section */}
-        <div className="mb-12">
+        <div className="mb-8 sm:mb-12">
           {viewMode === "vcs" ? (
             // Enhanced VC Results
             results.length > 0 ? (
               <>
-                <div className="flex items-center justify-between mb-8">
-                  <h3 className="text-3xl font-bold text-gray-800 flex items-center">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8">
+                  <h3 className="text-2xl sm:text-3xl font-bold text-gray-800 flex items-center mb-4 sm:mb-0">
                     <div className="p-2 bg-blue-100 rounded-xl mr-3">
-                      <Users className="w-7 h-7 text-blue-600" />
+                      <Users className="w-6 h-6 sm:w-7 sm:h-7 text-blue-600" />
                     </div>
                     Found {results.length} VCs
                   </h3>
                 </div>
                 
                 {/* Temporary Delete Warning */}
-                <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
-                  <div className="flex items-center">
-                    <svg className="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="mb-6 p-3 sm:p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
+                  <div className="flex items-start sm:items-center">
+                    <svg className="w-5 h-5 text-yellow-600 mr-2 mt-0.5 sm:mt-0 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
                     </svg>
                     <div>
@@ -884,59 +924,61 @@ const VCSearch = () => {
                     </div>
                   </div>
                 </div>
-                <div className="grid gap-8">
+                <div className="grid gap-4 sm:gap-6 lg:gap-8">
                   {results.map((vc) => (
                     <div
                       key={vc.id}
-                      className="group bg-white rounded-3xl shadow-xl hover:shadow-2xl border border-gray-100 overflow-hidden transform hover:scale-102 transition-all duration-500"
+                      className="group bg-white rounded-2xl sm:rounded-3xl shadow-xl hover:shadow-2xl border border-gray-100 overflow-hidden transform hover:scale-102 transition-all duration-500"
                     >
-                      <div className="p-8">
-                        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-6">
+                      <div className="p-4 sm:p-6 lg:p-8">
+                        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-4 sm:mb-6">
                           <div className="flex-1">
-                            <h3 className="text-2xl font-bold text-gray-800 mb-3 group-hover:text-blue-600 transition-colors duration-300">
+                            <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2 sm:mb-3 group-hover:text-blue-600 transition-colors duration-300">
                               {vc.full_name}
                             </h3>
-                            <p className="text-gray-600 text-lg mb-4 leading-relaxed">{vc.headline}</p>
+                            <p className="text-gray-600 text-base sm:text-lg mb-3 sm:mb-4 leading-relaxed">{vc.headline}</p>
                             {vc.location && (
-                              <div className="flex items-center text-gray-500 mb-4">
-                                <div className="p-1 bg-blue-50 rounded-lg mr-3">
-                                  <MapPin className="w-5 h-5 text-blue-500" />
+                              <div className="flex items-center text-gray-500 mb-3 sm:mb-4">
+                                <div className="p-1 bg-blue-50 rounded-lg mr-2 sm:mr-3">
+                                  <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500" />
                                 </div>
-                                <span className="font-medium">{vc.location}</span>
+                                <span className="font-medium text-sm sm:text-base">{vc.location}</span>
                               </div>
                             )}
                           </div>
                           
-                          <div className="mt-4 lg:mt-0 lg:ml-6 flex flex-col gap-3">
+                          <div className="mt-4 lg:mt-0 lg:ml-6 flex flex-col gap-2 sm:gap-3">
                             {vc.profile_url && (
                               <a 
                                 href={vc.profile_url} 
                                 target="_blank" 
                                 rel="noopener noreferrer" 
-                                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                                className="inline-flex items-center justify-center px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-sm sm:text-base"
                               >
-                                <Globe className="w-5 h-5 mr-2" />
-                                View Profile
-                                <ExternalLink className="w-4 h-4 ml-2" />
+                                <Globe className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" />
+                                <span className="hidden sm:inline">View Profile</span>
+                                <span className="sm:hidden">Profile</span>
+                                <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 ml-1 sm:ml-2" />
                               </a>
                             )}
                             
                             {/* Temporary Delete Button - Remove in production */}
                             <button
                               onClick={() => deleteVC(vc.id)}
-                              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 border border-red-500"
+                              className="inline-flex items-center justify-center px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 border border-red-500 text-sm sm:text-base"
                               title="Delete this VC from database (Temporary feature)"
                             >
-                              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                               </svg>
-                              Delete VC
+                              <span className="hidden sm:inline">Delete VC</span>
+                              <span className="sm:hidden">Delete</span>
                             </button>
                           </div>
                         </div>
                         
-                        <div className="border-t border-gray-100 pt-6">
-                          <div className="flex flex-wrap gap-3">
+                        <div className="border-t border-gray-100 pt-4 sm:pt-6">
+                          <div className="flex flex-wrap gap-2 sm:gap-3">
                             {vc.industry_focus && (
                               <>
                                 <div className="text-sm font-semibold text-gray-600 mb-2 w-full">
@@ -945,23 +987,9 @@ const VCSearch = () => {
                                 </div>
                                 {Array.isArray(vc.industry_focus) 
                                   ? vc.industry_focus.map((ind, idx) => (
-                                      <span key={idx} className="px-4 py-2 bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 text-sm font-medium rounded-full border border-blue-200 hover:bg-blue-200 transition-colors duration-200">{ind}</span>
+                                      <span key={idx} className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full border border-blue-200 hover:bg-blue-200 transition-colors duration-200">{ind}</span>
                                     ))
-                                  : <span className="px-4 py-2 bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 text-sm font-medium rounded-full border border-blue-200">{vc.industry_focus}</span>
-                                }
-                              </>
-                            )}
-                            {vc.stage_focus && (
-                              <>
-                                <div className="text-sm font-semibold text-gray-600 mb-2 w-full mt-4">
-                                  <TrendingUp className="w-4 h-4 inline mr-1" />
-                                  Investment Stages:
-                                </div>
-                                {Array.isArray(vc.stage_focus) 
-                                  ? vc.stage_focus.map((stg, idx) => (
-                                      <span key={idx} className="px-4 py-2 bg-gradient-to-r from-green-50 to-green-100 text-green-700 text-sm font-medium rounded-full border border-green-200 hover:bg-green-200 transition-colors duration-200">{stg}</span>
-                                    ))
-                                  : <span className="px-4 py-2 bg-gradient-to-r from-green-50 to-green-100 text-green-700 text-sm font-medium rounded-full border border-green-200">{vc.stage_focus}</span>
+                                  : <span className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full border border-blue-200">{vc.industry_focus}</span>
                                 }
                               </>
                             )}
@@ -973,33 +1001,33 @@ const VCSearch = () => {
                 </div>
               </>
             ) : !isLoading && (
-              <div className="text-center py-20">
-                <div className="p-6 bg-blue-50 rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center">
-                  <Search className="w-12 h-12 text-blue-400" />
+              <div className="text-center py-12 sm:py-20">
+                <div className="p-4 sm:p-6 bg-blue-50 rounded-full w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-4 sm:mb-6 flex items-center justify-center">
+                  <Search className="w-10 h-10 sm:w-12 sm:h-12 text-blue-400" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-700 mb-2">Ready to Find VCs?</h3>
-                <p className="text-gray-500">Use the filters above to discover venture capitalists that match your startup.</p>
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-2">Ready to Find VCs?</h3>
+                <p className="text-sm sm:text-base text-gray-500 px-4">Use the filters above to discover venture capitalists that match your startup.</p>
               </div>
             )
           ) : (
             // Enhanced Schemes Results
             <>
               {/* Horizontal Filters for Schemes */}
-              <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 mb-8">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-xl font-bold text-gray-800 flex items-center">
-                    <Filter className="w-6 h-6 mr-2 text-purple-600" />
+              <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl border border-gray-100 p-4 sm:p-6 mb-6 sm:mb-8">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-3">
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-800 flex items-center">
+                    <Filter className="w-5 h-5 sm:w-6 sm:h-6 mr-2 text-purple-600" />
                     Filter Startup Schemes
                   </h3>
                   <button
                     onClick={clearAllFilters}
-                    className="px-4 py-2 text-sm font-medium text-purple-600 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors duration-200"
+                    className="px-3 sm:px-4 py-2 text-sm font-medium text-purple-600 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors duration-200 w-full sm:w-auto"
                   >
                     Clear All Filters
                   </button>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                   {/* State Filter */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">State</label>
@@ -1079,7 +1107,7 @@ const VCSearch = () => {
                   <p className="text-sm text-gray-500 mb-2">
                     Filters are applied automatically as you make selections
                   </p>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs text-gray-400 px-2">
                     💡 Tip: Click on "Visit Official Portal" to access scheme details and application forms
                   </p>
                 </div>
@@ -1087,11 +1115,11 @@ const VCSearch = () => {
               
                             {schemes.length > 0 ? (
                 <>
-                  <div className="flex items-center justify-between mb-8">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8">
                     <div>
-                      <h3 className="text-3xl font-bold text-gray-800 flex items-center mb-2">
+                      <h3 className="text-2xl sm:text-3xl font-bold text-gray-800 flex items-center mb-3 sm:mb-2">
                         <div className="p-2 bg-purple-100 rounded-xl mr-3">
-                          <Award className="w-7 h-7 text-purple-600" />
+                          <Award className="w-6 h-6 sm:w-7 sm:h-7 text-purple-600" />
                         </div>
                         Found {schemes.length} Schemes
                       </h3>
@@ -1100,22 +1128,22 @@ const VCSearch = () => {
                         <div className="flex flex-wrap gap-2">
                           <span className="text-sm text-gray-600">Filters applied:</span>
                           {selectedState && (
-                            <span className="px-3 py-1 bg-purple-100 text-purple-700 text-sm font-medium rounded-full">
+                            <span className="px-2 sm:px-3 py-1 bg-purple-100 text-purple-700 text-xs sm:text-sm font-medium rounded-full">
                               State: {selectedState}
                             </span>
                           )}
                           {selectedSector && (
-                            <span className="px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium rounded-full">
+                            <span className="px-2 sm:px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full">
                               Sector: {selectedSector}
                             </span>
                           )}
                           {selectedCategory && (
-                            <span className="px-3 py-1 bg-green-100 text-green-700 text-sm font-medium rounded-full">
+                            <span className="px-2 sm:px-3 py-1 bg-green-100 text-green-700 text-xs sm:text-sm font-medium rounded-full">
                               Category: {selectedCategory}
                             </span>
                           )}
                           {selectedSchemeType && (
-                            <span className="px-3 py-1 bg-orange-100 text-orange-700 text-sm font-medium rounded-full">
+                            <span className="px-2 sm:px-3 py-1 bg-orange-100 text-orange-700 text-xs sm:text-sm font-medium rounded-full">
                               Type: {selectedSchemeType}
                             </span>
                           )}
@@ -1123,7 +1151,7 @@ const VCSearch = () => {
                       )}
                     </div>
                   </div>
-                <div className="grid gap-8">
+                <div className="grid gap-4 sm:gap-6 lg:gap-8">
                   {schemes.map((scheme, index) => {
                     // Category color mapping
                     const categoryColors = {
@@ -1140,154 +1168,132 @@ const VCSearch = () => {
                     return (
                       <div
                         key={scheme.id}
-                        className="group bg-white rounded-3xl shadow-xl hover:shadow-2xl border border-gray-100 overflow-hidden transform hover:scale-102 transition-all duration-500"
+                        className="group bg-white rounded-2xl sm:rounded-3xl shadow-xl hover:shadow-2xl border border-gray-100 overflow-hidden transform hover:scale-102 transition-all duration-500"
                       >
-                        <div className={`bg-gradient-to-r ${categoryInfo.bg} h-2`}></div>
-                        <div className="p-8">
+                        <div className={`bg-gradient-to-r ${categoryInfo.bg} h-1 sm:h-2`}></div>
+                        <div className="p-4 sm:p-6 lg:p-8">
                           {/* Header Section */}
-                          <div className="flex items-start justify-between mb-6">
-                            <div className="flex-1">
-                              <div className="flex items-center mb-3">
-                                <div className={`p-2 bg-${categoryInfo.accent}-100 rounded-xl mr-3`}>
-                                  <CategoryIcon className={`w-6 h-6 text-${categoryInfo.accent}-600`} />
-                                </div>
-                                <div>
-                                  <h3 className={`text-2xl font-bold text-gray-800 group-hover:text-${categoryInfo.accent}-600 transition-colors duration-300`}>
-                                    {scheme.name}
-                                  </h3>
-                                  {scheme.category && (
-                                    <span className={`inline-block px-3 py-1 bg-${categoryInfo.accent}-100 text-${categoryInfo.accent}-700 text-sm font-medium rounded-full mt-1`}>
-                                      {scheme.category}
-                                    </span>
-                                  )}
-                                </div>
+                          <div className="mb-4 sm:mb-6">
+                            <div className="flex items-start gap-3 mb-3">
+                              <div className={`p-2 bg-${categoryInfo.accent}-100 rounded-xl flex-shrink-0`}>
+                                <CategoryIcon className={`w-5 h-5 sm:w-6 sm:h-6 text-${categoryInfo.accent}-600`} />
                               </div>
-                              <p className="text-gray-600 text-lg mb-4 leading-relaxed">
-                                {scheme.description}
-                              </p>
-                              
-                              {scheme.managing_agency && (
-                                <div className="flex items-center text-gray-600 mb-4">
-                                  <div className={`p-1 bg-${categoryInfo.accent}-50 rounded-lg mr-3`}>
-                                    <Layers className={`w-5 h-5 text-${categoryInfo.accent}-500`} />
-                                  </div>
-                                  <span className="font-medium">Managing Agency: {scheme.managing_agency}</span>
-                                </div>
-                              )}
-                              
-                              {/* New fields display */}
-                              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                                {scheme.state && (
-                                  <div className="flex items-center text-gray-600">
-                                    <div className={`p-1 bg-${categoryInfo.accent}-50 rounded-lg mr-2`}>
-                                      <MapPin className={`w-4 h-4 text-${categoryInfo.accent}-500`} />
-                                    </div>
-                                    <span className="text-sm font-medium">{scheme.state}</span>
-                                  </div>
-                                )}
-                                
-                                {scheme.sector && (
-                                  <div className="flex items-center text-gray-600">
-                                    <div className={`p-1 bg-${categoryInfo.accent}-50 rounded-lg mr-2`}>
-                                      <Building2 className={`w-4 h-4 text-${categoryInfo.accent}-500`} />
-                                    </div>
-                                    <span className="text-sm font-medium">{scheme.sector}</span>
-                                  </div>
-                                )}
-                                
-                                {scheme.application_deadline && (
-                                  <div className="flex items-center text-gray-600">
-                                    <div className={`p-1 bg-${categoryInfo.accent}-50 rounded-lg mr-2`}>
-                                      <Calendar className={`w-4 h-4 text-${categoryInfo.accent}-500`} />
-                                    </div>
-                                    <span className="text-sm font-medium">{scheme.application_deadline}</span>
-                                  </div>
+                              <div className="flex-1 min-w-0">
+                                <h3 className={`text-lg sm:text-xl lg:text-2xl font-bold text-gray-800 group-hover:text-${categoryInfo.accent}-600 transition-colors duration-300 leading-tight mb-2`}>
+                                  {scheme.name}
+                                </h3>
+                                {scheme.category && (
+                                  <span className={`inline-block px-2 sm:px-3 py-1 bg-${categoryInfo.accent}-100 text-${categoryInfo.accent}-700 text-xs sm:text-sm font-medium rounded-full`}>
+                                    {scheme.category}
+                                  </span>
                                 )}
                               </div>
                             </div>
                             
-                            <div className="ml-6 text-right">
-                              <div className={`inline-flex items-center px-4 py-2 bg-gradient-to-r from-${categoryInfo.accent}-100 to-${categoryInfo.accent}-200 text-${categoryInfo.accent}-700 font-semibold rounded-full border border-${categoryInfo.accent}-200`}>
-                                <Calendar className="w-4 h-4 mr-2" />
-                                Scheme #{index + 1}
-                              </div>
+                            <p className="text-gray-600 text-sm sm:text-base lg:text-lg mb-4 leading-relaxed">
+                              {scheme.description}
+                            </p>
+                            
+                            {/* Quick Info Grid - Mobile Optimized */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
+                              {scheme.state && (
+                                <div className="flex items-center text-gray-600 bg-gray-50 rounded-lg p-2">
+                                  <MapPin className={`w-4 h-4 text-${categoryInfo.accent}-500 mr-2 flex-shrink-0`} />
+                                  <span className="text-xs sm:text-sm font-medium truncate">{scheme.state}</span>
+                                </div>
+                              )}
+                              
+                              {scheme.sector && (
+                                <div className="flex items-center text-gray-600 bg-gray-50 rounded-lg p-2">
+                                  <Building2 className={`w-4 h-4 text-${categoryInfo.accent}-500 mr-2 flex-shrink-0`} />
+                                  <span className="text-xs sm:text-sm font-medium truncate">{scheme.sector}</span>
+                                </div>
+                              )}
+                              
+                              {scheme.application_deadline && (
+                                <div className="flex items-center text-gray-600 bg-gray-50 rounded-lg p-2">
+                                  <Calendar className={`w-4 h-4 text-${categoryInfo.accent}-500 mr-2 flex-shrink-0`} />
+                                  <span className="text-xs sm:text-sm font-medium truncate">{scheme.application_deadline}</span>
+                                </div>
+                              )}
                             </div>
+                            
+                            {scheme.managing_agency && (
+                              <div className="flex items-center text-gray-600 mb-4 bg-blue-50 rounded-lg p-2">
+                                <Layers className={`w-4 h-4 text-blue-500 mr-2 flex-shrink-0`} />
+                                <span className="text-xs sm:text-sm font-medium">Managing Agency: {scheme.managing_agency}</span>
+                              </div>
+                            )}
                           </div>
                           
-                          {/* Objectives Section */}
+                          {/* Objectives Section - Collapsible on Mobile */}
                           {scheme.objectives && (
-                            <div className="mb-6 p-4 bg-gradient-to-r from-gray-50 to-slate-50 rounded-2xl border border-gray-200">
+                            <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-gradient-to-r from-gray-50 to-slate-50 rounded-xl sm:rounded-2xl border border-gray-200">
                               <div className="flex items-center mb-2">
-                                <div className="p-1 bg-gray-100 rounded-lg mr-2">
-                                  <TrendingUp className="w-4 h-4 text-gray-600" />
-                                </div>
-                                <h4 className="font-bold text-gray-800">Objectives</h4>
+                                <TrendingUp className="w-4 h-4 text-gray-600 mr-2" />
+                                <h4 className="font-bold text-gray-800 text-sm sm:text-base">Objectives</h4>
                               </div>
-                              <p className="text-gray-700 leading-relaxed text-sm">
+                              <p className="text-gray-700 leading-relaxed text-xs sm:text-sm">
                                 {scheme.objectives}
                               </p>
                             </div>
                           )}
                           
-                          <div className="border-t border-gray-100 pt-6">
-                            {/* Benefits & Eligibility Grid */}
-                            <div className="grid md:grid-cols-2 gap-6 mb-6">
-                              <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-2xl border border-green-200">
-                                <div className="flex items-center mb-3">
-                                  <div className="p-2 bg-green-100 rounded-lg mr-3">
-                                    <DollarSign className="w-5 h-5 text-green-600" />
-                                  </div>
-                                  <h4 className="font-bold text-green-800 text-lg">Benefits</h4>
+                          <div className="border-t border-gray-100 pt-4 sm:pt-6">
+                            {/* Benefits & Eligibility - Stacked on Mobile */}
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
+                              <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-3 sm:p-4 lg:p-6 rounded-xl sm:rounded-2xl border border-green-200">
+                                <div className="flex items-center mb-2 sm:mb-3">
+                                  <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-green-600 mr-2 sm:mr-3" />
+                                  <h4 className="font-bold text-green-800 text-sm sm:text-base lg:text-lg">Benefits</h4>
                                 </div>
-                                <p className="text-green-700 leading-relaxed">
+                                <p className="text-green-700 leading-relaxed text-xs sm:text-sm">
                                   {scheme.benefits || "Comprehensive support for startup growth and development"}
                                 </p>
                               </div>
                               
-                              <div className="bg-gradient-to-br from-blue-50 to-cyan-50 p-6 rounded-2xl border border-blue-200">
-                                <div className="flex items-center mb-3">
-                                  <div className="p-2 bg-blue-100 rounded-lg mr-3">
-                                    <Users className="w-5 h-5 text-blue-600" />
-                                  </div>
-                                  <h4 className="font-bold text-blue-800 text-lg">Eligibility</h4>
+                              <div className="bg-gradient-to-br from-blue-50 to-cyan-50 p-3 sm:p-4 lg:p-6 rounded-xl sm:rounded-2xl border border-blue-200">
+                                <div className="flex items-center mb-2 sm:mb-3">
+                                  <Users className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 mr-2 sm:mr-3" />
+                                  <h4 className="font-bold text-blue-800 text-sm sm:text-base lg:text-lg">Eligibility</h4>
                                 </div>
-                                <p className="text-blue-700 leading-relaxed">
+                                <p className="text-green-700 leading-relaxed text-xs sm:text-sm">
                                   {scheme.eligibility || "Open to qualifying startups and entrepreneurs"}
                                 </p>
                               </div>
                             </div>
                             
-                            {/* Funding Details */}
+                            {/* Funding Details - Compact on Mobile */}
                             {scheme.funding_details && scheme.funding_details !== 'Not applicable' && (
-                              <div className="mb-6 p-6 bg-gradient-to-br from-yellow-50 to-amber-50 rounded-2xl border border-yellow-200">
-                                <div className="flex items-center mb-3">
-                                  <div className="p-2 bg-yellow-100 rounded-lg mr-3">
-                                    <DollarSign className="w-5 h-5 text-yellow-600" />
-                                  </div>
-                                  <h4 className="font-bold text-yellow-800 text-lg">Funding Details</h4>
+                              <div className="mb-4 sm:mb-6 p-3 sm:p-4 lg:p-6 bg-gradient-to-br from-yellow-50 to-amber-50 rounded-xl sm:rounded-2xl border border-yellow-200">
+                                <div className="flex items-center mb-2 sm:mb-3">
+                                  <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-600 mr-2 sm:mr-3" />
+                                  <h4 className="font-bold text-yellow-800 text-sm sm:text-base lg:text-lg">Funding Details</h4>
                                 </div>
-                                <p className="text-yellow-700 leading-relaxed">
+                                <p className="text-yellow-700 leading-relaxed text-xs sm:text-sm">
                                   {scheme.funding_details}
                                 </p>
                               </div>
                             )}
                             
-                            {/* Action Button */}
-                            <div className="pt-6 border-t border-gray-100">
+                            {/* Action Button - Full Width on Mobile */}
+                            <div className="pt-4 sm:pt-6 border-t border-gray-100">
                               {scheme.official_link ? (
                                 <a 
                                   href={scheme.official_link} 
                                   target="_blank" 
                                   rel="noopener noreferrer"
-                                  className={`inline-flex items-center px-8 py-3 bg-gradient-to-r ${categoryInfo.bg} text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300`}
+                                  className={`w-full sm:w-auto inline-flex items-center justify-center px-4 sm:px-6 lg:px-8 py-3 bg-gradient-to-r ${categoryInfo.bg} text-white font-semibold rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-sm sm:text-base`}
                                 >
-                                  <ExternalLink className="w-5 h-5 mr-2" />
-                                  Visit Official Portal
+                                  <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                                  <span className="hidden sm:inline">Visit Official Portal</span>
+                                  <span className="sm:hidden">Visit Portal</span>
                                 </a>
                               ) : (
-                                <button className={`px-8 py-3 bg-gradient-to-r ${categoryInfo.bg} text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center`}>
-                                  <ExternalLink className="w-5 h-5 mr-2" />
-                                  Learn More & Apply
+                                <button className={`w-full sm:w-auto px-4 sm:px-6 lg:px-8 py-3 bg-gradient-to-r ${categoryInfo.bg} text-white font-semibold rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center text-sm sm:text-base`}>
+                                  <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                                  <span className="hidden sm:inline">Learn More & Apply</span>
+                                  <span className="sm:hidden">Learn More</span>
                                 </button>
                               )}
                             </div>
@@ -1299,12 +1305,12 @@ const VCSearch = () => {
                 </div>
               </>
             ) : !isLoading && (
-              <div className="text-center py-20">
-                <div className="p-6 bg-purple-50 rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center">
-                  <Layers className="w-12 h-12 text-purple-400" />
+              <div className="text-center py-12 sm:py-20">
+                <div className="p-4 sm:p-6 bg-purple-50 rounded-full w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-4 sm:mb-6 flex items-center justify-center">
+                  <Layers className="w-10 h-10 sm:w-12 sm:h-12 text-purple-400" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-700 mb-2">Loading Schemes...</h3>
-                <p className="text-gray-500">Discovering available startup schemes and programs.</p>
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-2">Loading Schemes...</h3>
+                <p className="text-sm sm:text-base text-gray-500 px-4">Discovering available startup schemes and programs.</p>
               </div>
             )}
           </>
