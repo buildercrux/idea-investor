@@ -84,6 +84,8 @@ const FindVC = () => {
 
 
 
+
+
   // --- Fetch Schemes ---
   const fetchSchemes = async () => {
     setIsLoading(true);
@@ -742,6 +744,7 @@ const FindVC = () => {
                     <option value="B2B Marketplaces">B2B Marketplaces</option>
                     <option value="Blockchain">Blockchain</option>
                     <option value="D2C">D2C</option>
+                    <option value="EV & BatteryTech">EV & BatteryTech</option>
                     <option value="FinTech">FinTech</option>
                     <option value="HealthTech">HealthTech</option>
                     <option value="SaaS">SaaS</option>
